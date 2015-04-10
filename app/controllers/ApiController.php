@@ -4,7 +4,35 @@ class ApiController extends Controller {
     
     protected function movieSearch()
     {
+        $pricePerPizzaRoll = PizzaRoller::GetPizzaRollPrice();
+        $query = Input::get('search');
+        $query = urlencode($query);
         
+        $rawData = file_get_contents('http://api.themoviedb.org/3/search/movie?api_key=9004a44d87b2613704631f1013b47cc9&query=' . $query);
+        
+        $data = json_decode($rawData);
+        
+        $first = $data->results[0];
+        $movie = ApiController::getMovie($first);
+        
+        $value = $movie->revenue;
+        $pizzaRollPrice = floor($value / $pricePerPizzaRoll);
+        
+        $output = array(
+            "raw" => $pizzaRollPrice,
+            "revenue" => $value,
+            "name" => $movie->original_title
+        );
+        
+        return PizzaRoller::RollJSON(1, "Found movie successfully.", PizzaRoller::ArrayToObject($output));
+    }
+    
+    protected static function getMovie($basicMovieObject)
+    {
+        $rawData = file_get_contents("http://api.themoviedb.org/3/movie/" . $basicMovieObject->id . "?api_key=9004a44d87b2613704631f1013b47cc9");
+        $data = json_decode($rawData);
+        
+        return $data;
     }
 
     /**
@@ -12,14 +40,7 @@ class ApiController extends Controller {
      */
     protected function productComparison()
     {
-        /*
-        * === ULTRA IMPORTANT VARIABLE, KEEP SAFE ===
-        */
-       $pricePerPizzaRoll = 0.087;
-       /*
-        * === ULTRA IMPORTANT VARIABLE ABOVE ===
-        */
-
+       $pricePerPizzaRoll = PizzaRoller::GetPizzaRollPrice();
        $searchData = Input::get('search');
 
        $urlSafeSearchData = urlencode($searchData);

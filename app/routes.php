@@ -6,3 +6,5 @@ Route::get('/', function()
 });
 
 Route::get('/comparison/product', 'ApiController@productComparison');
+
+Route::get('/comparison/movie', "ApiController@movieSearch");

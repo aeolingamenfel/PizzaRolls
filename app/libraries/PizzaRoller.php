@@ -31,5 +31,15 @@ class PizzaRoller{
 	  return false;
 	}
     }
+    
+    public static function GetPizzaRollPrice(){
+        /*
+        * === ULTRA IMPORTANT VARIABLE, KEEP SAFE ===
+        */
+       return 0.087;
+       /*
+        * === ULTRA IMPORTANT VARIABLE ABOVE ===
+        */
+    }
 }
 
