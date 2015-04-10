@@ -2,6 +2,40 @@
 
 class ApiController extends Controller {
     
+    protected function stockSearch()
+    {
+        $pricePerPizzaRoll = PizzaRoller::GetPizzaRollPrice();
+        $query = Input::get('search');
+        
+        $queryString = 'select * from yahoo.finance.quotes where symbol in ("' . $query . '")';
+        $queryString = urlencode($queryString);
+        
+        $rawData = file_get_contents(
+            'https://query.yahooapis.com/v1/public/yql?q=' . 
+            $queryString . 
+            '&format=json&diagnostics=true&env=http%3A%2F%2Fdatatables.org%2Falltables.env&callback='
+        );
+        $data = json_decode($rawData)->query;
+        
+        if($data->count > 0){
+            $quote = $data->results->quote;
+            $costPerStock = intval($quote->Ask);
+            
+            $rollCost = floor($costPerStock / $pricePerPizzaRoll);
+            
+            $output = array(
+                "raw" => $rollCost,
+                "cost" => $costPerStock,
+                "name" => $quote->Name,
+                "symbol" => $quote->symbol
+            );
+            
+            return PizzaRoller::RollJSON(1, "Found stock symbol successfully.", PizzaRoller::ArrayToObject($output));
+        }else{
+            return PizzaRoller::RollJSON(-1, "Could not find stock symbol.", null);
+        }
+    }
+    
     protected function movieSearch()
     {
         $pricePerPizzaRoll = PizzaRoller::GetPizzaRollPrice();
