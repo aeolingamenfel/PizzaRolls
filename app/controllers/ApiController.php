@@ -2,6 +2,11 @@
 
 class ApiController extends Controller {
     
+    protected function comparison()
+    {
+        $pricePerPizzaRoll = PizzaRoller::GetPizzaRollPrice();
+    }
+    
     protected function stockSearch()
     {
         $pricePerPizzaRoll = PizzaRoller::GetPizzaRollPrice();

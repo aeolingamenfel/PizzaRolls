@@ -5,8 +5,10 @@ Route::get('/', function()
     return View::make('index');
 });
 
-Route::get('/comparison/product', 'ApiController@productComparison');
+Route::any('/comparison', 'ApiController@comparison');
 
-Route::get('/comparison/movie', "ApiController@movieSearch");
+Route::any('/comparison/product', 'ApiController@productComparison');
 
-Route::get('/comparison/stock', "ApiController@stockSearch");
+Route::any('/comparison/movie', "ApiController@movieSearch");
+
+Route::any('/comparison/stock', "ApiController@stockSearch");
