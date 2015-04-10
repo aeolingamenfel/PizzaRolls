@@ -29,35 +29,50 @@ Route::get('/comparison/product', function(){
     
     $urlSafeSearchData = urlencode($searchData);
     
-    try{
-        $rawData = file_get_contents('http://api.walmartlabs.com/v1/search?query=' . $urlSafeSearchData . '&format=json&apiKey=uyaq7zdc4rwmx48qp6kqpgv3');
+    $errorMessage = "";
+    
+    for($x=0; $x<5; $x++){
+        try{
+            $rawData = file_get_contents('http://api.walmartlabs.com/v1/search?query=' . $urlSafeSearchData . '&format=json&apiKey=uyaq7zdc4rwmx48qp6kqpgv3');
 
-        $data = json_decode($rawData);
+            $data = json_decode($rawData);
 
-        if($data->totalResults > 0){
-            $items = $data->items;
-            $firstItem = $items[0];
+            if($data->totalResults > 0){
+                $items = $data->items;
+                $firstItem = $items[0];
+                $firstItem_arr = (array) $firstItem;
 
-            //return var_dump($firstItem);
+                //return var_dump($firstItem);
 
-            $cost = $firstItem->salePrice;
-            $pizzaRollCost = floor($cost / $pricePerPizzaRoll);
+                $cost = $firstItem->salePrice;
+                $pizzaRollCost = floor($cost / $pricePerPizzaRoll);
+                
+                $optionalData = array(
+                    "shortDescription" => "shortDescription",
+                    "image" => "thumbnailImage",
+                    "ratingImage" => "customerRatingImage"
+                );
 
-            $output = array(
-                "raw" => $pizzaRollCost,
-                "cost" => $cost,
-                "productName" => $firstItem->name,
-                "shortDescription" => $firstItem->shortDescription,
-                "image" => $firstItem->thumbnailImage,
-                "ratingImage" => $firstItem->customerRatingImage,
-                "string" => "A " . $firstItem->name . " is worth " . $pizzaRollCost . " pizza rolls."
-            );
+                $output = array(
+                    "raw" => $pizzaRollCost,
+                    "cost" => $cost,
+                    "productName" => $firstItem->name,
+                    "string" => "A " . $firstItem->name . " is worth " . $pizzaRollCost . " pizza rolls."
+                );
+                
+                foreach($optionalData as $outputString=> $itemString){
+                    if(isset($firstItem_arr[$itemString])){
+                        $output[$outputString] = $firstItem_arr[$itemString];
+                    }
+                }
 
-            return PizzaRoller::RollJSON(1, "Found item! Amount of pizza rolls incoming.", PizzaRoller::ArrayToObject($output));
-        }else{
-            return PizzaRoller::RollJSON(-1, "Could not find item.", null);
+                return PizzaRoller::RollJSON(1, "Found item! Amount of pizza rolls incoming.", PizzaRoller::ArrayToObject($output));
+            }else{
+                return PizzaRoller::RollJSON(-1, "Could not find item.", null);
+            }
+        }catch(Exception $exception){
+            $errorMessage .= "\n" . $exception->getMessage();
         }
-    }catch(Exception $exception){
-        return PizzaRoller::RollJSON(-1, "There was an error, please try making the request again.", null);
     }
+    return PizzaRoller::RollJSON(-1, $errorMessage, null);
 });
