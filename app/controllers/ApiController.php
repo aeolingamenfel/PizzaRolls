@@ -43,7 +43,7 @@ class ApiController extends Controller {
                    $pizzaRollCost = floor($cost / $pricePerPizzaRoll);
 
                    $optionalData = array(
-                       "shortDescription" => "shortDescription",
+                       "description" => "shortDescription",
                        "image" => "thumbnailImage",
                        "ratingImage" => "customerRatingImage"
                    );
