@@ -7,6 +7,8 @@ Route::get('/', function()
 
 Route::any('/comparison', 'ApiController@comparison');
 
+Route::any('/comparison/bitcoin', 'ApiController@bitcoinComparison');
+
 Route::any('/comparison/product', 'ApiController@productComparison');
 
 Route::any('/comparison/movie', "ApiController@movieSearch");
