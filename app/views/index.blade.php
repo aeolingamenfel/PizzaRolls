@@ -7,7 +7,7 @@
         <label for='Search'>Product Search</label>
         <input type='text' class='form-control' id='Search' placeholder='Enter any product name' />
     </div>
-    <button class='btn btn-default' onclick='GetPrice()'>Request</button>
+    <button class='btn btn-default' onclick='GetPrice(this)'>Request</button>
 </div>
 <div class='box container' id='Output'>
     
