@@ -1,6 +1,11 @@
 <?php
 
 class ApiController extends Controller {
+    
+    protected function movieSearch()
+    {
+        
+    }
 
     /**
      * Product comparison based on WalMart open API.
@@ -46,7 +51,7 @@ class ApiController extends Controller {
                    $output = array(
                        "raw" => $pizzaRollCost,
                        "cost" => $cost,
-                       "productName" => $firstItem->name,
+                       "name" => $firstItem->name,
                        "string" => "A " . $firstItem->name . " is worth " . $pizzaRollCost . " pizza rolls."
                    );
 

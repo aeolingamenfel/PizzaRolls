@@ -28,7 +28,7 @@ class PizzaRoller{
 	  return $object;
 	}
 	else {
-	  return FALSE;
+	  return false;
 	}
     }
 }
