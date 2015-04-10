@@ -3,9 +3,7 @@
 class ApiController extends Controller {
 
     /**
-     * Setup the layout used by the controller.
-     *
-     * @return void
+     * Product comparison based on WalMart open API.
      */
     protected function productComparison()
     {

@@ -3,19 +3,7 @@
 class PizzaRoller{
     public static function RollJSON($success, $message, $data){
 	$output = new PizzaRoll;
-	$output->success = -1;
-	
-	switch($success){
-	    case -1:
-		$output->success = 'no';
-		break;
-	    case 0:
-		$output->success = 'partial';
-		break;
-	    case 1:
-		$output->success = 'yes';
-		break;
-	}
+	$output->success = $success;
 	
 	$output->message = $message;
 	$output->data = $data;

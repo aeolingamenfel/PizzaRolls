@@ -11,7 +11,7 @@ function GetPrice(caller){
     }).done(function(message){
         $(caller).html(oldText);
         
-        if(message.success === "yes"){
+        if(message.success > 0){
             $("#OutputImage").attr('src', message.data.image);
             $("#OutputHeader").text(message.data.productname);
             $("#OutputCost").text("Price: " + message.data.raw + " Pizza Rolls");
