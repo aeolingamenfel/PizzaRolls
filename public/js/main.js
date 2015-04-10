@@ -1,10 +1,16 @@
 function GetPrice(goods){
     $.ajax({
         type: "GET",
-        url: "http://priceonomics.com/api/v1/search/?query=2003+audi+a4",
-        data:{}
+        url: "./comparison/product",
+        data:{
+            search: $("#Search").val()
+        }
     }).done(function(message){
-        console.log(message);
+        if(message.success === "yes"){
+            $("#Output").html(message.data.string);
+        }else{
+            alert("There was an error on the indexing site!\n\nPlease try refreshing.");
+        }
     });
 }
 

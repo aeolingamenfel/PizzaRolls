@@ -3,7 +3,11 @@
 @section('Content')
 
 <div>
-    <button onclick='GetPrice("Pizza Rolls")'>Test</button>
+    <input type='text' id='Search' placeholder='Search For Product Name' />
+    <button onclick='GetPrice()'>Request</button>
+</div>
+<div id='Output'>
+    
 </div>
 
 @stop
