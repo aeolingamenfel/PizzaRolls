@@ -13,5 +13,41 @@
 
 Route::get('/', function()
 {
-	return View::make('hello');
+    return View::make('index');
+});
+
+Route::get('/comparison/product', function(){
+    /*
+     * === ULTRA IMPORTANT VARIABLE, KEEP SAFE ===
+     */
+    $pricePerPizzaRoll = 0.087;
+    /*
+     * === ULTRA IMPORTANT VARIABLE ABOVE ===
+     */
+    
+    $searchData = Input::get('search');
+    
+    $urlSafeSearchData = urlencode($searchData);
+    
+    $rawData = file_get_contents('http://api.walmartlabs.com/v1/search?query=' . $urlSafeSearchData . '&format=json&apiKey=uyaq7zdc4rwmx48qp6kqpgv3');
+    
+    $data = json_decode($rawData);
+    
+    if($data->totalResults > 0){
+        $items = $data->items;
+        $firstItem = $items[0];
+        
+        $cost = $firstItem->msrp;
+        
+        $pizzaRollCost = floor($cost / $pricePerPizzaRoll);
+        
+        $output = array(
+            "raw" => $pizzaRollCost,
+            "string" => "A " . $firstItem->name . " is worth " . $pizzaRollCost . " pizza rolls."
+        );
+        
+        return PizzaRoller::RollJSON(1, "Found item! Amount of pizza rolls incoming.", PizzaRoller::ArrayToObject($output));
+    }else{
+        return PizzaRoller::RollJSON(-1, "Could not find item.", null);
+    }
 });
