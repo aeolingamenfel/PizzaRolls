@@ -63,6 +63,8 @@ Route::get('/comparison/product', function(){
                 foreach($optionalData as $outputString=> $itemString){
                     if(isset($firstItem_arr[$itemString])){
                         $output[$outputString] = $firstItem_arr[$itemString];
+                    }else{
+                        $output[$outputString] = "";
                     }
                 }
 
