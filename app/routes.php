@@ -37,7 +37,10 @@ Route::get('/comparison/product', function(){
         $items = $data->items;
         $firstItem = $items[0];
         
-        $cost = $firstItem->msrp;
+        //return var_dump($firstItem);
+        
+        
+        $cost = $firstItem->salePrice;
         
         $pizzaRollCost = floor($cost / $pricePerPizzaRoll);
         
