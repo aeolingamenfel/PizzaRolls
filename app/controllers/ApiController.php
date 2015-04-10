@@ -46,19 +46,23 @@ class ApiController extends Controller {
         
         $data = json_decode($rawData);
         
-        $first = $data->results[0];
-        $movie = ApiController::getMovie($first);
-        
-        $value = $movie->revenue;
-        $pizzaRollPrice = floor($value / $pricePerPizzaRoll);
-        
-        $output = array(
-            "raw" => $pizzaRollPrice,
-            "revenue" => $value,
-            "name" => $movie->original_title
-        );
-        
-        return PizzaRoller::RollJSON(1, "Found movie successfully.", PizzaRoller::ArrayToObject($output));
+        if(count($data->results) > 0){
+            $first = $data->results[0];
+            $movie = ApiController::getMovie($first);
+
+            $value = $movie->revenue;
+            $pizzaRollPrice = floor($value / $pricePerPizzaRoll);
+
+            $output = array(
+                "raw" => $pizzaRollPrice,
+                "revenue" => $value,
+                "name" => $movie->original_title
+            );
+
+            return PizzaRoller::RollJSON(1, "Found movie successfully.", PizzaRoller::ArrayToObject($output));
+        }else{
+            return PizzaRoller::RollJSON(-1, "Could not find movie.", null);
+        }
     }
     
     protected static function getMovie($basicMovieObject)
