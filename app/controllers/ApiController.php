@@ -5,6 +5,16 @@ class ApiController extends Controller {
     protected function comparison()
     {
         $pricePerPizzaRoll = PizzaRoller::GetPizzaRollPrice();
+        $value = intval(Input::get('value'));
+        
+        $rollValue = floor($value / $pricePerPizzaRoll);
+        
+        $output = array(
+            "raw" => $rollValue,
+            "cost" => $value
+        );
+        
+        return PizzaRoller::RollJSON(1, "Calculation complete. Enjoy your pizza rolls!", PizzaRoller::ArrayToObject($output));
     }
     
     protected function stockSearch()
