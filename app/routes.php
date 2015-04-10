@@ -29,28 +29,32 @@ Route::get('/comparison/product', function(){
     
     $urlSafeSearchData = urlencode($searchData);
     
-    $rawData = file_get_contents('http://api.walmartlabs.com/v1/search?query=' . $urlSafeSearchData . '&format=json&apiKey=uyaq7zdc4rwmx48qp6kqpgv3');
-    
-    $data = json_decode($rawData);
-    
-    if($data->totalResults > 0){
-        $items = $data->items;
-        $firstItem = $items[0];
-        
-        //return var_dump($firstItem);
-        
-        
-        $cost = $firstItem->salePrice;
-        
-        $pizzaRollCost = floor($cost / $pricePerPizzaRoll);
-        
-        $output = array(
-            "raw" => $pizzaRollCost,
-            "string" => "A " . $firstItem->name . " is worth " . $pizzaRollCost . " pizza rolls."
-        );
-        
-        return PizzaRoller::RollJSON(1, "Found item! Amount of pizza rolls incoming.", PizzaRoller::ArrayToObject($output));
-    }else{
-        return PizzaRoller::RollJSON(-1, "Could not find item.", null);
+    try{
+        $rawData = file_get_contents('http://api.walmartlabs.com/v1/search?query=' . $urlSafeSearchData . '&format=json&apiKey=uyaq7zdc4rwmx48qp6kqpgv3');
+
+        $data = json_decode($rawData);
+
+        if($data->totalResults > 0){
+            $items = $data->items;
+            $firstItem = $items[0];
+
+            //return var_dump($firstItem);
+
+
+            $cost = $firstItem->salePrice;
+
+            $pizzaRollCost = floor($cost / $pricePerPizzaRoll);
+
+            $output = array(
+                "raw" => $pizzaRollCost,
+                "string" => "A " . $firstItem->name . " is worth " . $pizzaRollCost . " pizza rolls."
+            );
+
+            return PizzaRoller::RollJSON(1, "Found item! Amount of pizza rolls incoming.", PizzaRoller::ArrayToObject($output));
+        }else{
+            return PizzaRoller::RollJSON(-1, "Could not find item.", null);
+        }
+    }catch(Exception $exception){
+        return PizzaRoller::RollJSON(-1, "There was an error, please try refreshing.", null);
     }
 });
