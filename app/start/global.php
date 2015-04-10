@@ -79,4 +79,10 @@ App::down(function()
 |
 */
 
+App::missing(function($exception)
+{
+    $layout = \View::make('errors.404');
+    return Response::make($layout, 404);
+});
+
 require app_path().'/filters.php';
