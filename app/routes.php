@@ -53,6 +53,6 @@ Route::get('/comparison/product', function(){
             return PizzaRoller::RollJSON(-1, "Could not find item.", null);
         }
     }catch(Exception $exception){
-        return PizzaRoller::RollJSON(-1, "There was an error, please try refreshing.", null);
+        return PizzaRoller::RollJSON(-1, "There was an error, please try making the request again.", null);
     }
 });

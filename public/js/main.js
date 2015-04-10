@@ -1,4 +1,4 @@
-function GetPrice(goods){
+function GetPrice(){
     $.ajax({
         type: "GET",
         url: "./comparison/product",
@@ -9,7 +9,7 @@ function GetPrice(goods){
         if(message.success === "yes"){
             $("#Output").html(message.data.string);
         }else{
-            alert("There was an error on the indexing site!\n\nPlease try refreshing.");
+            alert(message.message);
         }
     });
 }

@@ -2,11 +2,14 @@
 
 @section('Content')
 
-<div>
-    <input type='text' id='Search' placeholder='Search For Product Name' />
-    <button onclick='GetPrice()'>Request</button>
+<div class='box container'>
+    <div class='form-group'>
+        <label for='Search'>Product Search</label>
+        <input type='text' class='form-control' id='Search' placeholder='Enter any product name' />
+    </div>
+    <button class='btn btn-default' onclick='GetPrice()'>Request</button>
 </div>
-<div id='Output'>
+<div class='box container' id='Output'>
     
 </div>
 
