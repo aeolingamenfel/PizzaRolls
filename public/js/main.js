@@ -12,7 +12,10 @@ function GetPrice(caller){
         $(caller).html(oldText);
         
         if(message.success === "yes"){
-            $("#Output").html(message.data.string);
+            $("#OutputImage").attr('src', message.data.image);
+            $("#OutputHeader").text(message.data.productname);
+            $("#OutputCost").text("Price: " + message.data.raw + " Pizza Rolls");
+            $("#OutputDescription").text(message.data.shortdescription);
         }else{
             alert(message.message);
         }

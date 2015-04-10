@@ -45,6 +45,11 @@ Route::get('/comparison/product', function(){
 
             $output = array(
                 "raw" => $pizzaRollCost,
+                "cost" => $cost,
+                "productName" => $firstItem->name,
+                "shortDescription" => $firstItem->shortDescription,
+                "image" => $firstItem->thumbnailImage,
+                "ratingImage" => $firstItem->customerRatingImage,
                 "string" => "A " . $firstItem->name . " is worth " . $pizzaRollCost . " pizza rolls."
             );
 
