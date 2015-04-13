@@ -20,7 +20,7 @@
         <!-- Custom -->
         
         {{ HTML::style('css/master.css') }}
-        {{ HTML::script('js/main.js') }}
+        {{ HTML::script(URL::to('js/main')) }}
     </head>
     <body>
         <div id='Header'>
